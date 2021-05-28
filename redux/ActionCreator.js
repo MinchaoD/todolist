@@ -15,13 +15,29 @@ export const addTask = task => ({
     payload: task
 });
 
-
-
-// export const clearAllTasks = () => ({
-//   type: ActionTypes.CLEAR_TASKS,
-// })
-
 export const deleteTask = (task) => ({
   type: ActionTypes.DELETE_TASK,
   payload: task
+});
+
+
+
+export const postTaskP = (taskP) => dispatch => {
+    const newTaskP = {
+        taskP,
+    };
+   
+    setTimeout(() => {
+        dispatch(addTaskP(newTaskP));
+    }, 2000); // 
+};
+
+export const addTaskP = taskP => ({
+    type: ActionTypes.ADD_TASK_P,
+    payload: taskP
+});
+
+export const deleteTaskP = (taskP) => ({
+  type: ActionTypes.DELETE_TASK_P,
+  payload: taskP
 });

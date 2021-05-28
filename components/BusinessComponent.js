@@ -90,8 +90,8 @@ class Business extends Component {
                     <Text style={{alignSelf:'center', fontSize:20, fontWeight:'bold', fontStyle:'italic', color:'#663399'}}>To Do List</Text>
                     <View style={{marginTop: 20}}>
                     <Input
-                        placeholder="  new task"
-                        leftIcon = {{type: 'font-awesome', name: 'tasks'}}
+                        placeholder=" new task"
+                        leftIcon = {{type: 'font-awesome', marginLeft:10, marginRight: 10, name: 'tasks'}}
                         onChangeText= {text=> this.setState({task: text})}
                         value={this.state.task} />
                     </View>

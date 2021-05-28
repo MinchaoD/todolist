@@ -7,9 +7,7 @@ export const Tasks = (state = {tasks: []}, action) => {
       const task = action.payload
       task.id = state.tasks.length
       return { ...state, tasks: state.tasks.concat(task) }
-   
-    // case ActionTypes.CLEAR_TASKS:
-    //   return { ...state, todo: state.todo.filter((task) => !task.complete) }
+      
     case ActionTypes.DELETE_TASK:
       
       return state.filter(task => task != action.payload)

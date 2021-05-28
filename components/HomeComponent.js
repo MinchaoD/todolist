@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, View, ScrollView } from 'react-native';
-import { Card } from 'react-native-elements';
+import { Text, StyleSheet, View } from 'react-native';
+
 
 class Home extends Component {
   

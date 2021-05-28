@@ -1,132 +1,137 @@
-// import React, { Component, useState } from 'react'
-// import { View, StyleSheet,Text,ScrollView, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
-
-// class Personal extends Component {
-//     constructor(props) {
-//         super(props);
-//         this.state={
-//             todoitem:'',
-//             addtolist:'',
-//         };
-//         this.handleChange = this.handleChange.bind(this);
-//         this.handleAdd = this.handleAdd.bind(this);
-//     }
-
-//     handleChange(event) {
-//         this.setState({
-//             todoitem: event.target.value,
-//         })
-//     }
-
-//     handleAdd(event) {
-//         addtolist((preValue) => {
-//               return [todoitem, ...preValue];
-//              });
-//              todoitem("");
-//         }
-
-//     render(){
-//         const styles= StyleSheet.create({
-//             input: {
-//               height: 40,
-//               margin: 12,
-//               borderWidth: 1,
-//             },
-//             button:{
-//                 width:100,
-//                 alignSelf: 'center',
-        
-//             },
-//             text: {
-//                 backgroundColor: "#d4d4f7", fontSize:30,  fontStyle: 'italic', fontWeight:'bold', textAlign:'center',textAlignVertical: 'center'
-//             }
-//           });
-//         const {todoitem} = this.state;
-
-//    return (
-//       <View >
-//         <Text style={[styles.text,{paddingTop:20}]}> Personal </Text>
-//         <Text style={[styles.text, {fontSize:20,paddingBottom:20, marginBottom:30}]}>To-Do List</Text>
-//         <TextInput
-//             style={styles.input}
-//             onChangeText= {this.handleChange}
-//             value={todoitem}>
-//         </TextInput>
-//         <View    style={styles.button}>
-//         <Button
-//            title = "Add"/>
-//         {/* //    onPress={handleAdd}
-//         //    value={addtolist}/> */}
-//         </View>
-//         {/* <FlatList
-//             data={addToList}
-//             renderItem={
-//              addToList.map((list, index) => (
-//             <ToDoItem
-//               key={index}
-//               id={index}
-//               text={list}
-//               onChecked={DeleteItem}/>))}
-//         />
-//           */}
-//       </View>
-//   );
-// }}
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Text, View, Button, StyleSheet, Alert, ScrollView } from 'react-native'
+import { Input } from 'react-native-elements'
+import * as Animatable from 'react-native-animatable'; 
+import { postTaskP, deleteTaskP } from '../redux/ActionCreator';
+import { FlatList} from 'react-native-gesture-handler';
 
 
-// export default Personal;
+const mapStateToProps = (state) => {
+    return {
+        TasksP: state.TasksP,
 
-import React, { useState } from "react";
-import ToDoItem from "./ToDoItem";
-
-function App() {
-  const [thingsToDo, setThings] = useState("");
-  const [addToList, setList] = useState([]);
-  function addThings(event) {
-    setThings(event.target.value);
-  }
-  function addList(event) {
-    setList((preValue) => {
-      return [thingsToDo, ...preValue];
-    });
-    setThings("");
-  }
-
-  function deleteItem(id) {
-    setList((preValue) => {
-      return preValue.filter((item, index) => {
-        return index != id;
-      });
-    });
-  }
-
-  return (
-    <div className="container">
-      <div>
-        <h1>To-Do List</h1>
-      </div>
-      <div className="form">
-        <input onChange={addThings} type="text" value={thingsToDo} />
-        <button>
-          <span onClick={addList} value={addToList}>
-            Add
-          </span>
-        </button>
-      </div>
-      <div>
-        <ul>
-          {addToList.map((list, index) => (
-            <ToDoItem
-              key={index}
-              id={index}
-              text={list}
-              onChecked={deleteItem}
-            />
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
+    }
 }
-export default App;
 
+const mapDispatchToProps = {
+    postTaskP:(taskP) => (postTaskP(taskP)),
+    deleteTaskP: taskP => deleteTaskP(taskP)
+}
+
+function RenderTasksP(props) {
+    const {tasksP} = props;
+    const renderTaskItemP = ({item}) => {
+
+        return (
+            <View>
+                <Text  style={{fontSize:25, fontWeight:'bold', marginLeft: 20, marginBottom:20}}
+                 onPress={() => 
+                    Alert.alert(
+                        'Delete Task?', 
+                        'Are you sure you wish to delete the task ' + item.taskP + '?', 
+                        [ 
+                            {
+                                text: 'Cancel',
+                                onPress: () => console.log(item.taskP + ' Not Deleted'),
+                                style: 'cancel'
+                            },
+                            {
+                                text: 'OK',
+                                onPress: () => deleteTaskP(item.taskP)
+                            }
+                        ],
+                        {cancelable: false} 
+                    )}>
+                 {item.taskP} </Text>
+                
+            </View>)
+         
+    }
+    return (
+            <FlatList
+                data={tasksP}
+                renderItem={renderTaskItemP}
+                keyExtractor={item => item.id.toString()}/>
+    )
+}
+
+class Personal extends Component {
+
+    static navigationOptions = {
+        title: 'Home'
+    }
+
+    constructor(props) {
+        super(props) 
+        this.state = {
+            taskP: '',
+        }
+        this.handleSubmit = this.handleSubmit.bind(this);
+
+        }
+        
+
+    handleSubmit() {
+      
+            console.log(JSON.stringify(this.state)),
+            this.props.postTaskP(this.state.taskP);
+            this.setState({taskP: ''})
+        
+    }
+   
+    render() {
+        
+        return (
+            <ScrollView>
+                <Animatable.View animation='fadeInDown' duration={2000} delay={1000}> 
+                
+                    <Text style={{marginTop:20, alignSelf:'center', fontSize:30, fontWeight:'bold', fontStyle:'italic', color:'#663399'}}>Personal </Text>
+                    <Text style={{alignSelf:'center', fontSize:20, fontWeight:'bold', fontStyle:'italic', color:'#663399'}}>To Do List</Text>
+                    <View style={{marginTop: 20}}>
+                    <Input
+                        placeholder=" new task"
+                        leftIcon = {{type: 'font-awesome',  marginLeft:10, marginRight: 10, name: 'tasks'}}
+                        onChangeText= {text=> this.setState({taskP: text})}
+                        value={this.state.taskP} />
+                    </View>
+                    <View style={{marginBottom:10, alignItems:'center'}}>
+                        <Button 
+                            onPress= {() => {
+                                this.handleSubmit();
+                            }}
+                            color = '#663399'
+                            title = 'ADD' />
+                    </View>
+                    <RenderTasksP tasksP={this.props.TasksP.tasksP} />
+            
+                </Animatable.View>
+             
+            </ScrollView>
+            
+        )
+    }
+} 
+
+const styles = StyleSheet.create({
+    deleteView: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        flex: 1
+    },
+    deleteTouchable: {
+        backgroundColor: 'grey',
+        height: '100%',
+        justifyContent: 'center'
+    },
+    deleteText: {
+        color: 'white',
+        fontWeight: '700',
+        textAlign: 'center',
+        fontSize: 16,
+        width: 70
+    }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Personal);
