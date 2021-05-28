@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Text, View, Button, ScrollView } from 'react-native'
-import { Card, Input } from 'react-native-elements'
+import { Text, View, Button, StyleSheet, Alert, ScrollView } from 'react-native'
+import { Input } from 'react-native-elements'
 import * as Animatable from 'react-native-animatable'; 
-import { postTask } from '../redux/ActionCreator'
-import { FlatList } from 'react-native-gesture-handler';
-
+import { postTask, deleteTask } from '../redux/ActionCreator';
+import { FlatList} from 'react-native-gesture-handler';
 
 
 const mapStateToProps = (state) => {
@@ -17,25 +16,43 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     postTask:(task) => (postTask(task)),
+    deleteTask: task => deleteTask(task)
 }
 
-function RenderTasks({tasks}) {
+function RenderTasks(props) {
+    const {tasks} = props;
     const renderTaskItem = ({item}) => {
+
         return (
-            <Text  style={{fontSize:25, fontWeight:'bold', marginLeft: 20, marginBottom:20}}> {item.task}</Text>
-        )
+            <View>
+                <Text  style={{fontSize:25, fontWeight:'bold', marginLeft: 20, marginBottom:20}}
+                 onPress={() => 
+                    Alert.alert(
+                        'Delete Task?', 
+                        'Are you sure you wish to delete the task ' + item.task + '?', 
+                        [ 
+                            {
+                                text: 'Cancel',
+                                onPress: () => console.log(item.task + ' Not Deleted'),
+                                style: 'cancel'
+                            },
+                            {
+                                text: 'OK',
+                                onPress: () => deleteTask(item.task)
+                            }
+                        ],
+                        {cancelable: false} 
+                    )}>
+                 {item.task} </Text>
+                
+            </View>)
+         
     }
     return (
-        <Animatable.View animation='fadeInUp' duration={2000} delay={1000}> 
-        
             <FlatList
                 data={tasks}
                 renderItem={renderTaskItem}
                 keyExtractor={item => item.id.toString()}/>
-
-        
-        </Animatable.View>
-
     )
 }
 
@@ -64,7 +81,6 @@ class Business extends Component {
     }
    
     render() {
-        const tasks = this.props.Tasks.tasks
         
         return (
             <ScrollView>
@@ -87,7 +103,7 @@ class Business extends Component {
                             color = '#663399'
                             title = 'ADD' />
                     </View>
-                    <RenderTasks tasks={tasks} />
+                    <RenderTasks tasks={this.props.Tasks.tasks} />
             
                 </Animatable.View>
              
@@ -96,5 +112,26 @@ class Business extends Component {
         )
     }
 } 
+
+const styles = StyleSheet.create({
+    deleteView: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        flex: 1
+    },
+    deleteTouchable: {
+        backgroundColor: 'grey',
+        height: '100%',
+        justifyContent: 'center'
+    },
+    deleteText: {
+        color: 'white',
+        fontWeight: '700',
+        textAlign: 'center',
+        fontSize: 16,
+        width: 70
+    }
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Business);

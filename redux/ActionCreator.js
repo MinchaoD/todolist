@@ -15,15 +15,13 @@ export const addTask = task => ({
     payload: task
 });
 
-// export const toggleToDo = (id) => ({
-//   type: ActionTypes.TOGGLE_COMPLETE,
-//   payload: id,
-// })
+
 
 // export const clearAllTasks = () => ({
 //   type: ActionTypes.CLEAR_TASKS,
 // })
 
-// export const deleteAllTasks = () => ({
-//   type: ActionTypes.DELETE_TASKS,
-// })
+export const deleteTask = (task) => ({
+  type: ActionTypes.DELETE_TASK,
+  payload: task
+});
