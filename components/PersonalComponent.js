@@ -107,25 +107,4 @@ class Personal extends Component {
     }
 } 
 
-const styles = StyleSheet.create({
-    deleteView: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        flex: 1
-    },
-    deleteTouchable: {
-        backgroundColor: 'grey',
-        height: '100%',
-        justifyContent: 'center'
-    },
-    deleteText: {
-        color: 'white',
-        fontWeight: '700',
-        textAlign: 'center',
-        fontSize: 16,
-        width: 70
-    }
-});
-
 export default connect(mapStateToProps, mapDispatchToProps)(Personal);
