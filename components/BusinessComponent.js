@@ -10,50 +10,12 @@ import { FlatList} from 'react-native-gesture-handler';
 const mapStateToProps = (state) => {
     return {
         Tasks: state.Tasks,
-
     }
 }
 
 const mapDispatchToProps = {
     postTask:(task) => (postTask(task)),
     deleteTask: task => deleteTask(task)
-}
-
-function RenderTasks(props) {
-    const {tasks} = props;
-    const renderTaskItem = ({item}) => {
-
-        return (
-            <View>
-                <Text  style={{fontSize:25, fontWeight:'bold', marginLeft: 20, marginBottom:20}}
-                 onPress={() => 
-                    Alert.alert(
-                        'Delete Task?', 
-                        'Are you sure you wish to delete the task ' + item.task + '?', 
-                        [ 
-                            {
-                                text: 'Cancel',
-                                onPress: () => console.log(item.task + ' Not Deleted'),
-                                style: 'cancel'
-                            },
-                            {
-                                text: 'OK',
-                                onPress: () => deleteTask(item.task)
-                            }
-                        ],
-                        {cancelable: false} 
-                    )}>
-                 {item.task} </Text>
-                
-            </View>)
-         
-    }
-    return (
-            <FlatList
-                data={tasks}
-                renderItem={renderTaskItem}
-                keyExtractor={item => item.id.toString()}/>
-    )
 }
 
 class Business extends Component {
@@ -70,7 +32,6 @@ class Business extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
 
         }
-        
 
     handleSubmit() {
       
@@ -81,6 +42,33 @@ class Business extends Component {
     }
    
     render() {
+        const {tasks} = this.props;
+        const renderTaskItem = ({item}) => {
+            return (
+                <View>
+                    <Text  style={{fontSize:25, fontWeight:'bold', marginLeft: 20, marginBottom:20}}
+                     onPress={() => 
+                        Alert.alert(
+                            'Delete Task?', 
+                            'Are you sure you wish to delete the task ' + item.task + '?', 
+                            [ 
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => console.log(item.task + ' Not Deleted'),
+                                    style: 'cancel'
+                                },
+                                {
+                                    text: 'OK',
+                                    onPress: () => {this.props.deleteTask(item.task)}
+                                }
+                            ],
+                            {cancelable: false} 
+                        )}>
+                     {item.task} </Text>
+                    
+                </View>)
+             
+        }
         
         return (
             <ScrollView>
@@ -103,7 +91,10 @@ class Business extends Component {
                             color = '#663399'
                             title = 'ADD' />
                     </View>
-                    <RenderTasks tasks={this.props.Tasks.tasks} />
+                    <FlatList
+                data={this.props.Tasks.tasks}
+                renderItem={renderTaskItem}
+                keyExtractor={item => item.id.toString()}/>
             
                 </Animatable.View>
              

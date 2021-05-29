@@ -9,8 +9,7 @@ export const Tasks = (state = {tasks: []}, action) => {
       return { ...state, tasks: state.tasks.concat(task) }
       
     case ActionTypes.DELETE_TASK:
-      
-      return state.filter(task => task != action.payload)
+      return {...state, tasks: state.tasks.filter(item => item.task !== action.payload)}
     default:
       return state
   }

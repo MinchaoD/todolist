@@ -100,7 +100,7 @@ class Personal extends Component {
                             onPress= {() => {
                                 this.handleSubmit();
                             }}
-                            color = '#663399'
+                            color = '#0000CD'
                             title = 'ADD' />
                     </View>
                     <RenderTasksP tasksP={this.props.TasksP.tasksP} />
