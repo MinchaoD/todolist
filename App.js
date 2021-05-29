@@ -4,12 +4,15 @@ import { ConfigureStore } from './redux/ConfigureStore';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import Main from './components/MainComponent';
 
-const store = ConfigureStore()
+const { persistor, store } = ConfigureStore()
 
 export default function App() {
   return (
     <Provider store={store}>
-    <Main />
+      <PersistGate
+        persistor = {persistor}>
+        <Main />
+    </PersistGate>
     </Provider>
   );
 }

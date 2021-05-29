@@ -19,43 +19,6 @@ const mapDispatchToProps = {
     deleteTaskP: taskP => deleteTaskP(taskP)
 }
 
-function RenderTasksP(props) {
-    const {tasksP} = props;
-    const renderTaskItemP = ({item}) => {
-
-        return (
-            <View>
-                <Text  style={{fontSize:25, fontWeight:'bold', marginLeft: 20, marginBottom:20}}
-                 onPress={() => 
-                    Alert.alert(
-                        'Delete Task?', 
-                        'Are you sure you wish to delete the task ' + item.taskP + '?', 
-                        [ 
-                            {
-                                text: 'Cancel',
-                                onPress: () => console.log(item.taskP + ' Not Deleted'),
-                                style: 'cancel'
-                            },
-                            {
-                                text: 'OK',
-                                onPress: () => deleteTaskP(item.taskP)
-                            }
-                        ],
-                        {cancelable: false} 
-                    )}>
-                 {item.taskP} </Text>
-                
-            </View>)
-         
-    }
-    return (
-            <FlatList
-                data={tasksP}
-                renderItem={renderTaskItemP}
-                keyExtractor={item => item.id.toString()}/>
-    )
-}
-
 class Personal extends Component {
 
     static navigationOptions = {
@@ -81,6 +44,34 @@ class Personal extends Component {
     }
    
     render() {
+        const {tasksP} = this.props;
+        const renderTaskItemP = ({item}) => {
+    
+            return (
+                <View>
+                    <Text  style={{fontSize:25, fontWeight:'bold', marginLeft: 20, marginBottom:20}}
+                     onPress={() => 
+                        Alert.alert(
+                            'Delete Task?', 
+                            'Are you sure you wish to delete the task ' + item.taskP + '?', 
+                            [ 
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => console.log(item.taskP + ' Not Deleted'),
+                                    style: 'cancel'
+                                },
+                                {
+                                    text: 'OK',
+                                    onPress: () => this.props.deleteTaskP(item.taskP)
+                                }
+                            ],
+                            {cancelable: false} 
+                        )}>
+                     {item.taskP} </Text>
+                    
+                </View>)
+             
+        }
         
         return (
             <ScrollView>
@@ -103,8 +94,11 @@ class Personal extends Component {
                             color = '#0000CD'
                             title = 'ADD' />
                     </View>
-                    <RenderTasksP tasksP={this.props.TasksP.tasksP} />
-            
+                    <FlatList
+                        data={this.props.TasksP.tasksP}
+                        renderItem={renderTaskItemP}
+                        keyExtractor={item => item.id.toString()}/>
+                    
                 </Animatable.View>
              
             </ScrollView>

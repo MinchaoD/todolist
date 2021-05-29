@@ -32,6 +32,7 @@ class Business extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
 
         }
+        
 
     handleSubmit() {
       
