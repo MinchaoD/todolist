@@ -45,7 +45,7 @@ class Home extends Component {
         const { navigate } = this.props.navigation; 
         const styles = StyleSheet.create({
             container: {
-            flex: 1, fontSize:50, fontStyle: 'italic', fontWeight:'bold', textAlign:'center',textAlignVertical: 'center'},
+            flex: 1, fontSize:30, fontStyle: 'italic', fontWeight:'bold', textAlign:'center',textAlignVertical: 'center'},
             icon: {
                 marginLeft: 100,
                 
@@ -53,7 +53,7 @@ class Home extends Component {
             title:{
                
                 backgroundColor: '#fdcb6e',
-                margin: 50,
+                margin: 60,
                 borderBottomLeftRadius:60,
                 borderTopRightRadius: 20,
                
@@ -71,8 +71,8 @@ class Home extends Component {
                     backgroundColor: '#87CEEB',
                     alignItems: "center"
                 }}>
-                    <Icon type='font-awesome' name= 'home' iconStyle={[styles.icon]} size={40}/>
-                    <Text style={[styles.container, {fontSize:30, marginRight: 100}]} onPress={() => navigate('Personal')}> Personal </Text>
+                    <Icon type='font-awesome' name= 'home' iconStyle={[styles.icon]} size={30}/>
+                    <Text style={[styles.container, {fontSize:25, marginRight: 100}]} onPress={() => navigate('Personal')}> Personal </Text>
                     
                 </Animated.View>
                 <Animated.View style={{
@@ -83,7 +83,7 @@ class Home extends Component {
                     alignItems: "center"
                 }}>
                     <Icon type='font-awesome' name= 'building' iconStyle={[styles.icon]} size={30} />
-                    <Text style={[styles.container, {marginRight: 100, fontSize:30}]}  onPress={() => navigate('Business')}> Business </Text>
+                    <Text style={[styles.container, {marginRight: 100, fontSize:25}]}  onPress={() => navigate('Business')}> Business </Text>
                 </Animated.View>
             </View>
         )
